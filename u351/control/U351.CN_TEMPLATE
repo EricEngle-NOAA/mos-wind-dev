@@ -1,0 +1,8 @@
+THRESHOLD VALUES FOR ecm MOS WIND GUST PROBABILTIY
+   1   0   1   1
+<station>
+ 99
+199    u830.MMM.gust.thresholds                                    ##OUTPUT RANDOM ACCESS FILE.
+ 99
+<inputASCII>
+ 99

@@ -1,0 +1,23 @@
+# ======================================================================================== 
+#
+# Theshold Information for U830.
+#
+# Variables (Definitions from TDL Office Note 00-2):
+#     BKI - The initial breakpoint. If the user does not wish to give a value, a 9999.
+#           may be used, in which case the program will compute one from the
+#           probabilities.
+#    BILO - The lower bound of acceptable bias.
+#    BIHO - The upper bound of acceptable bias.
+#   DELTA - The initial amount by which BKI is changed in the computational.
+#  EDELTA - The probability increment by which thresholds are calculated for printout
+#           of contingency tables and associated statistics.
+# NEVENTS - The minimum number of matched observed-forecast events for which U830 will
+#           generate breakpoints for each group-category. Note: When the actual number of
+#           matched observed-forecast events is less than the desired number of events
+#           for a particular group-category the threshold value is set to .999 for that
+#           group-category. 
+#
+# Format: 5F10.0,I9
+#
+# ======================================================================================== 
+    9999.       .80       1.20       .01     .003

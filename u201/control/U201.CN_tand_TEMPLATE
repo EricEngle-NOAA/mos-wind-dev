@@ -1,0 +1,24 @@
+EFE1 12 12 12 12 12 12 12 12 12 12 12  0  0  0  0 12 12 12 12 12 12 12 12 12 12
+MMM MOS WIND PREDICTANDS - BB SEASON
+         0  KSKIP --SKIP PAST THIS DATE ON THE OUPTUT FILE
+         0  KWRITE--WRITE OUT CALL LETTERS WHEN THEY DO NOT MATCH
+       800  NSKIP --NUMBER ERRORS TO BE TOLERATED ON DAY 1 BEFORE STOPPING
+     10000  JSTOP --NUMBER ERRORS TO BE TOLERATED ON TOTAL RUN BEFORE STOPPING
+        01  INCCYL--INCREMENT IN HOURS BETWEEN DATE/TIMES
+         1  NEW   --1 FOR NEW 4-CHARACTER CALL LETTERS, 0 FOR OLD
+         1  NALPH --1 FOR ALPHABETIZATION OF CALL LETTERS, 0 FOR NOT
+      9997  PXMISS--VALUE TO USE FOR SECONDARY MISSING VALUE 9997
+ 15    u201.dates.BB.tand                                          ## DATE FILE
+ 99
+<input>
+ 99 
+<rainput>
+ 99
+199    u201.MMMwind.SSS.tand.BB                                    ## VECTOR OUTPUT
+ 99
+<station>
+ 99
+ 32    u201.ids.wind.tand                                          ## ID LIST
+ 99
+ 33    mos2000id.tbl                                               ## MOS-2000 ID TABLE
+ 99

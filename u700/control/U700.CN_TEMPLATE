@@ -1,0 +1,27 @@
+EFE1 12 00 12 12 00 00 00 00 00 00 00 00 00 00 12 00 00 00 00 00 00 00 00 00 00
+U700
+         0  KSKIP --SKIP PAST THIS DATE WHEN WRITING PACKED FORECASTS
+         0  KWRITE--WILL DIRECTORY RECORD WILL BE WRITTEN WHEN THERE IS A MISMATCH?
+       100  NSKIP --NUMBER OF ERRORS TO TOLERATE ON DAY 1 BEFORE STOPPING
+       100  JSTOP --NUMBER OF ERRORS TO TOLERATE BEFORE STOPPING RUN
+        24  INCCYL--HOURS BETWEEN CASES
+         1  NEW   --NEW ICAO STATION CALL LETTERS, 1 = YES, 0 = NO
+         1  NALPH --ALPHABETIZE STATIONS BY ICAO CALL LETTERS, 1 = YES, 0 = NO
+      9997  PXMISS--VALUE TO INSERT FOR SECONDARY MISSING VALUE, 9997
+ 19    u700.dates.HH.BB.CCCCCCCCCC                                 ##DATE LIST
+ 99 
+ 20    data/u201.MMMwind.tand.BB                                   ##VECTOR PREDICTAND INPUT 
+<inputPRED>
+ 99 
+<rainput>
+ 99
+199    u700.MMMHH.EEEE.BB                                          ##VECTOR FORECAST OUTPUT
+ 99 
+<station>
+ 99
+<inputEQNS>
+ 99                     
+ 32    mdl_predtofcst                                              ##PREDICTAND/FORECAST CORRESPONDENCE TABLE
+ 99                    
+ 33    mos2000id.tbl                                               ##PREDICTOR CONSTANTS
+ 99

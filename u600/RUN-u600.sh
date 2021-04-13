@@ -149,7 +149,6 @@ fi
 
 if [ -f $DATA/run-u600-poe.sh ]; then rm -f $DATA/run-u600-poe.sh; fi
 cat << EOF > $DATA/run-u600-poe.sh
-#BSUB -a poe
 #BSUB -J  "u600-${MODEL}${CYC}-${ELEMENT}-${SEASON}-${RUN}"
 #BSUB -oo "u600-${MODEL}${CYC}-${ELEMENT}-${SEASON}-${RUN}.out"
 #BSUB -W 04:00

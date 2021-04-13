@@ -143,7 +143,6 @@ fi
 
 if [ -f $DATA/run-u830-poe.sh ]; then rm -f $DATA/run-u830-poe.sh; fi
 cat << EOF > $DATA/run-u830-poe.sh
-#BSUB -a poe
 #BSUB -J  "u830-${MODEL}${CYC}-${ELEMENT}-${SEASON}"
 #BSUB -oo "$DATA/u830-${MODEL}${CYC}-${ELEMENT}-${SEASON}.out"
 #BSUB -W 04:00

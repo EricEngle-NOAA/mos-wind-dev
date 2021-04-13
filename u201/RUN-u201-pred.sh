@@ -127,7 +127,6 @@ fi
 
 if [ -f $DATA/run-u201-poe.sh ]; then rm -f $DATA/run-u201-poe.sh; fi
 cat << EOF > $DATA/run-u201-poe.sh
-#BSUB -a poe
 #BSUB -J  "u201-${MODEL}${CYC}-pred-${SEASON}"
 #BSUB -oo "$DATA/u201-${MODEL}${CYC}-pred-${SEASON}.out"
 #BSUB -W 04:00

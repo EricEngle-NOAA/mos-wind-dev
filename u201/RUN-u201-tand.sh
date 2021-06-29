@@ -10,17 +10,17 @@ MODEL="nam"
 SEASON="wm"
 SAVEFORT12=1
 SHARED=0
-STATION="marine"             # metar, marine, mesonet
+STATYPE="marine"             # metar, marine, mesonet
 SUBMIT=1
 
 # ==============================================================================   
 # Get the string the obs archive name
 # ==============================================================================   
-if [ "$STATION" == "metar" ]; then
+if [ "$STATYPE" == "metar" ]; then
    ARCHNAME="hre"
-elif [ "$STATION" == "marine" ]; then
+elif [ "$STATYPE" == "marine" ]; then
    ARCHNAME="mar"
-elif [ "$STATION" == "mesonet" ]; then
+elif [ "$STATYPE" == "mesonet" ]; then
    ARCHNAME="mesohre"
 fi
 
@@ -42,7 +42,7 @@ if [ $SHARED -eq 1 ]; then
 fi
 
 # Define and make WORKDIR
-WORKDIR=$DEVSTMP/u201_${MODEL}${ELEMENT}_${STATION}_tand_${SEASON}
+WORKDIR=$DEVSTMP/u201_${MODEL}${ELEMENT}_${STATYPE}_tand_${SEASON}
 if [ ! -d $WORKDIR ]; then
    mkdir -p $WORKDIR
 fi
@@ -54,7 +54,7 @@ ln -s $DEVDIR/u201/data_tand $WORKDIR/data_tand
 cp dates/u201.dates.${SEASON}.tand $WORKDIR/.
 cp ../const/$CONST_GRD $WORKDIR/.
 cp ../const/$CONST_STA $WORKDIR/.
-cp ../table/$STATION.lst $WORKDIR/.
+cp ../table/$STATYPE.lst $WORKDIR/.
 cp ../table/$STATBL $WORKDIR/.
 cp ../table/mos2000id.tbl $WORKDIR/.
 cp sorc/u201.x $WORKDIR/.
@@ -70,13 +70,13 @@ printf " 44    %-60s##GRIDDED CONSTANTS\n" $CONST_GRD >> $WORKDIR/rainput
 printf " 45    %-60s##VECTOR CONSTANTS\n"  $CONST_STA >> $WORKDIR/rainput
 
 # Create list of station list and table
-printf " 30    %-60s##STATION LIST\n"  $STATION.lst >> $WORKDIR/station
-printf " 31    %-60s##STATION TABLE\n" $STATBL >> $WORKDIR/station
+printf " 30    %-60s##STATYPE LIST\n"  $STATYPE.lst >> $WORKDIR/station
+printf " 31    %-60s##STATYPE TABLE\n" $STATBL >> $WORKDIR/station
 
 # Create U201.CN
 sed -e "s/MMM/${MODEL}/g" \
     -e "s/BB/${SEASON}/g" \
-    -e "s/SSS/${STATION:0:3}/g" \
+    -e "s/SSS/${STATYPE:0:3}/g" \
     -e "/<input>/r $WORKDIR/inputs" \
     -e "/<rainput>/r $WORKDIR/rainput" \
     -e "/<station>/r $WORKDIR/station" control/U201.CN_tand_TEMPLATE > $WORKDIR/U201.CN
@@ -89,16 +89,15 @@ echo "cd $WORKDIR/" >> $WORKDIR/run-u201.sh
 echo "./u201.x" >> $WORKDIR/run-u201.sh
 echo "cp $OUTPUT $DEVOUTDIR/u201/$OUTPUT" >> $WORKDIR/run-u201.sh
 if [ $SAVEFORT12 -eq 1 ]; then
-echo "cp fort.12 $DEVOUTDIR/u201/fort12_${MODEL}${ELEMENT}_${STATION:0:3}_tand_${SEASON}" >> $WORKDIR/run-u201.sh
+echo "cp fort.12 $DEVOUTDIR/u201/fort12_${MODEL}${ELEMENT}_${STATYPE:0:3}_tand_${SEASON}" >> $WORKDIR/run-u201.sh
 fi
 chmod 744 $WORKDIR/run-u201.sh
 
 # ==============================================================================   
 # Submit on the command line.
 # ==============================================================================   
-bsub  -a serial \
-      -J  "u201-${MODEL}${ELEMENT}-${STATION}-tand-${SEASON}" \
-      -oo "u201-${MODEL}${ELEMENT}-${STATION}-tand-${SEASON}.out" \
+bsub  -J  "u201-${MODEL}${ELEMENT}-${STATYPE}-tand-${SEASON}" \
+      -oo "u201-${MODEL}${ELEMENT}-${STATYPE}-tand-${SEASON}.out" \
       -W 01:00 \
       -q "$QUEUE" \
       -x \

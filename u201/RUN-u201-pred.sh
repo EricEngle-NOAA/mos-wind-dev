@@ -112,12 +112,12 @@ chmod 744 $WORKDIR/run-u201.sh
 done # for TAU
 
 # ==============================================================================   
-# Build poescript and job card.
+# Build mpmdscript and job card.
 # ==============================================================================   
-POESCRIPT=$DATA/poescript
-if [ -f $POESCRIPT ]; then rm -f $POESCRIPT; fi
-/bin/ls -1 $DATA/f*/run-u201.sh > $POESCRIPT
-NTASKS=$(cat $POESCRIPT | wc -l)
+MPMDSCRIPT=$DATA/mpmdscript
+if [ -f $MPMDSCRIPT ]; then rm -f $MPMDSCRIPT; fi
+/bin/ls -1 $DATA/f*/run-u201.sh > $MPMDSCRIPT
+NTASKS=$(cat $MPMDSCRIPT | wc -l)
 
 if [ $NTASKS -le $MAXTHREADS ]; then
    PTILE=$NTASKS
@@ -125,8 +125,8 @@ else
    PTILE=$MAXTHREADS
 fi
 
-if [ -f $DATA/run-u201-poe.sh ]; then rm -f $DATA/run-u201-poe.sh; fi
-cat << EOF > $DATA/run-u201-poe.sh
+if [ -f $DATA/run-u201-mpmd.sh ]; then rm -f $DATA/run-u201-mpmd.sh; fi
+cat << EOF > $DATA/run-u201-mpmd.sh
 #BSUB -J  "u201-${MODEL}${CYC}-pred-${SEASON}"
 #BSUB -oo "$DATA/u201-${MODEL}${CYC}-pred-${SEASON}.out"
 #BSUB -W 04:00
@@ -139,11 +139,13 @@ cat << EOF > $DATA/run-u201-poe.sh
 #
 cd $DATA
 #
+chmod 775 ./mpmdscript
 export MP_PGMMODEL=mpmd
 export MP_LABELIO=YES
-export MP_STDOUTMODE="unordered"
-chmod 755 poescript
-mpirun.lsf -cmdfile ./poescript
+export MP_STDOUTMODE=ordered
+export OMP_NUM_THREADS=1
+export KMP_AFFINITY=scatter
+mpirun cfp ./mpmdscript
 #
 EOF
 
@@ -151,6 +153,6 @@ EOF
 # Submit job
 # ==============================================================================   
 if [ $SUBMIT -eq 1 ]; then
-   chmod 744 $DATA/run-u201-poe.sh
-   cat $DATA/run-u201-poe.sh | bsub
+   chmod 744 $DATA/run-u201-mpmd.sh
+   cat $DATA/run-u201-mpmd.sh | bsub
 fi

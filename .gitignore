@@ -1,4 +1,5 @@
 .DS_Store
+*.out
 
 u*/sorc/*.f
 u*/sorc/*.f90

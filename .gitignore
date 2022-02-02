@@ -1,1 +1,10 @@
 .DS_Store
+
+u*/sorc/*.f
+u*/sorc/*.f90
+u*/sorc/*.o
+u*/sorc/make.u*
+u*/sorc/u*.x
+
+u201/data_tand/*
+u201/data_pred/*

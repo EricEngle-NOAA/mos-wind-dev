@@ -1,19 +1,24 @@
 #!/bin/sh
-set -x
 # ==============================================================================   
 # RUN script for U662 (Combine METAR and Marine Predictand Data)
 #
 # This process is very quick so no need to run in stmp or submit to LSF.
 # ==============================================================================   
-
-ELEMENT="wind"
-MODEL="gfs"
-SEASON="cl"
+if [ $# -ne 3 ]; then
+   echo "   MODEL = model string"
+   echo "   ELEMENT = \"wind\""
+   echo "   SEASON = season string"
+   exit 1
+fi
+MODEL=$1
+ELEMENT=$2
+SEASON=$3
 
 # ==============================================================================   
 # Import dev environment
 # ==============================================================================   
-. ../dev.env
+set -x
+. ../env/dev.env
 
 # Create symlinks to U201 metar and marine predictand files.
 ln -s $DEVOUTDIR/u201/u201.${MODEL}${ELEMENT}.met.tand.${SEASON} .

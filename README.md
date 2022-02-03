@@ -10,4 +10,4 @@ Setup your environment by editing [dev.env](./env/dev.env).  This file contains 
 Setup files in `table/` and `const/` directories. See the README files in those directories.
 
 ## Predictand and Predictor Generation
-Predictand and predictor generation is done using program [u201](./u201).
+Predictand and predictor generation is done using program [u201](./u201).  See the u201 directory [README](./u201/README.md) and u201 RUN scripts for more information.  For predictand generation, you must run u201 for METAR and Marine stations separately.  Once these have been completed, run [u662](./u662/) to merge METAR and Marine predictand TDLPACK files into a single file.

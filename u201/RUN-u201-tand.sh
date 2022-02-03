@@ -1,21 +1,44 @@
 #!/bin/sh
-set -x
 
-# ==============================================================================   
+# ---------------------------------------------------------------------------------------- 
 # Change variables. The following variables are yes/no, but use 1/0.
 #      SAVEFORT12, SHARED, SUBMIT
-# ==============================================================================
-ELEMENT="wind"
-MODEL="nam"
-SEASON="wm"
-SAVEFORT12=1
-SHARED=0
-STATYPE="marine"             # metar, marine, mesonet
-SUBMIT=1
+# ---------------------------------------------------------------------------------------- 
+#ELEMENT="wind"
+#MODEL="nam"
+#SEASON="wm"
+#SAVEFORT12=1
+#SHARED=0
+#STATYPE="marine"             # metar, marine, mesonet
+#SUBMIT=1
 
-# ==============================================================================   
+if [ $# -ne 7 ]; then
+   echo "Usage: $(basename $0) MODEL ELEMENT SEASON STATYPE SAVEFORT12 SHARED SUBMIT"
+   echo ""
+   echo "   MODEL = model string (i.e. gfs, nam, ecm)"
+   echo "   ELEMENT = wind, gust, prob"
+   echo "   SEASON = cl or wm"
+   echo "   STATYPE = metar, marine, mesonet"
+   echo "   SAVEFORT12 = 1 = yes; 0 = no"
+   echo "   SHARED = Run in a shared queue (1 = yes; 0 = no)"
+   echo "   SUBMIT = Submit as a job (1 = yes; 0 = no)"
+   echo ""
+   exit 1
+fi
+
+MODEL=$1
+ELEMENT=$2
+SEASON=$3
+STATYPE=$4
+SAVEFORT12=$5
+SHARED=$6
+SUBMIT=$7
+
+set -x
+
+# ---------------------------------------------------------------------------------------- 
 # Get the string the obs archive name
-# ==============================================================================   
+# ---------------------------------------------------------------------------------------- 
 if [ "$STATYPE" == "metar" ]; then
    ARCHNAME="hre"
 elif [ "$STATYPE" == "marine" ]; then
@@ -24,25 +47,27 @@ elif [ "$STATYPE" == "mesonet" ]; then
    ARCHNAME="mesohre"
 fi
 
-# ==============================================================================   
+# ---------------------------------------------------------------------------------------- 
 # Import dev environment
-# ==============================================================================   
-. ../dev.env
+# ---------------------------------------------------------------------------------------- 
+. ../env/dev.env
 
-# ==============================================================================   
+# ---------------------------------------------------------------------------------------- 
 # Get DD from MODEL. NOT NEEDED FOR PREDICTANDS
-# ==============================================================================   
+# ---------------------------------------------------------------------------------------- 
 DD=$(grep '^'"$MODEL" ../fix/model2dd | cut -d":" -f 2)
 
-# ==============================================================================   
+# ---------------------------------------------------------------------------------------- 
 # Modify QUEUE if SHARED=yes.
-# ==============================================================================   
+# ---------------------------------------------------------------------------------------- 
+RESOURCES="-x"
 if [ $SHARED -eq 1 ]; then
    QUEUE+="_shared"
+   RESOURCES="-M 4000 -R affinity[core(1)]"
 fi
 
 # Define and make WORKDIR
-WORKDIR=$DEVSTMP/u201_${MODEL}${ELEMENT}_${STATYPE}_tand_${SEASON}
+WORKDIR=$DEVSTMP/u201_${MODEL}${ELEMENT}_${STATYPE}_tand_${SEASON}.$$
 if [ ! -d $WORKDIR ]; then
    mkdir -p $WORKDIR
 fi
@@ -93,12 +118,12 @@ echo "cp fort.12 $DEVOUTDIR/u201/fort12_${MODEL}${ELEMENT}_${STATYPE:0:3}_tand_$
 fi
 chmod 744 $WORKDIR/run-u201.sh
 
-# ==============================================================================   
+# ---------------------------------------------------------------------------------------- 
 # Submit on the command line.
-# ==============================================================================   
+# ---------------------------------------------------------------------------------------- 
 bsub  -J  "u201-${MODEL}${ELEMENT}-${STATYPE}-tand-${SEASON}" \
       -oo "u201-${MODEL}${ELEMENT}-${STATYPE}-tand-${SEASON}.out" \
       -W 01:00 \
       -q "$QUEUE" \
-      -x \
+      $RESOURCES \
       -P "MDLST-T2O" $WORKDIR/run-u201.sh

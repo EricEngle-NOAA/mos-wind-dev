@@ -5,9 +5,12 @@
 # This process is very quick so no need to run in stmp or submit to LSF.
 # ==============================================================================   
 if [ $# -ne 3 ]; then
+   echo "Usage: $(basename $0) MODEL ELEMENT SEASON"
+   echo ""
    echo "   MODEL = model string"
    echo "   ELEMENT = \"wind\""
    echo "   SEASON = season string"
+   echo ""
    exit 1
 fi
 MODEL=$1
